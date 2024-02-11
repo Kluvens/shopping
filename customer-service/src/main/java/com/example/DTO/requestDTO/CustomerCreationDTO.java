@@ -1,5 +1,6 @@
 package com.example.DTO.requestDTO;
 
+import com.example.model.Customer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -12,4 +13,10 @@ public class CustomerCreationDTO {
     private String email;
     private String password;
 
+    public Customer toEntity() {
+        return new Customer()
+                .setUsername(this.username)
+                .setEmail(this.email)
+                .setPassword(this.password);
+    }
 }

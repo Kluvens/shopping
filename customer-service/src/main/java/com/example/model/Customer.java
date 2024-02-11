@@ -32,10 +32,10 @@ public class Customer {
 
     private String bio = "";
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<FavouriteItem> favouriteItems = new ArrayList<>();
 
     public CustomerResponseDTO toResponseDTO() {
