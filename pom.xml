@@ -11,8 +11,15 @@
     <groupId>com.example</groupId>
     <artifactId>shopping</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>shopping</name>
     <description>shopping</description>
+    <modules>
+        <module>product-service</module>
+        <module>product-service</module>
+        <module>customer-service</module>
+        <module>customer-service</module>
+    </modules>
     <properties>
         <java.version>17</java.version>
     </properties>

@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 @Setter
 @NoArgsConstructor
 @Accessors(chain = true)
-public class CustomerAddressDTO {
+public class CustomerAddressResponseDTO {
     private String id;
     private String street;
     private String suburb;
