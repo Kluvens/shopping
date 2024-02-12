@@ -7,6 +7,9 @@ import com.example.model.Address;
 import com.example.model.Customer;
 import com.example.service.CustomerAddressService;
 import com.example.service.CustomerService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
+    @CircuitBreaker(name = "customer")
+    @TimeLimiter(name = "customer")
+    @Retry(name = "customer")
     public ResponseEntity<CustomerResponseDTO> getCustomer(@PathVariable String id) {
         return ResponseEntity.ok(customerService.findById(id));
     }

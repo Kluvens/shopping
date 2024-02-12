@@ -5,6 +5,9 @@ import com.example.DTO.requestDTO.ProductUpdateDTO;
 import com.example.DTO.responseDTO.ProductResponseDTO;
 import com.example.model.Product;
 import com.example.service.ProductService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @CircuitBreaker(name = "product")
+    @TimeLimiter(name = "product")
+    @Retry(name = "product")
     public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable String id) {
         return ResponseEntity.ok(productService.findById(id));
     }
