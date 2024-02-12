@@ -45,12 +45,9 @@ public class CustomerService {
         Customer customer = customerRepository.findById(customerId).orElseThrow(()
                 -> new NotFoundException("Product not found with id " + customerId));
 
-        customerAddress.setCustomer(customer);
-        customer.getAddresses().add(customerAddress);
-        customerAddressRepository.save(customerAddress);
-        customerRepository.save(customer);
+        customer.addAddress(customerAddress);
 
-        return customer;
+        return customerRepository.save(customer);
     }
 
 }
