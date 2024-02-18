@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.DTO.requestDTO.ProductUpdateDTO;
+import com.example.DTO.responseDTO.ProductBriefDTO;
 import com.example.DTO.responseDTO.ProductResponseDTO;
 import com.example.exception.NotFoundException;
 import com.example.model.Category;
@@ -61,6 +62,21 @@ public class ProductService {
                 .setAttributes(getProductAttributesByName(product, updatedProduct.getAttributes()));
 
         return product.toResponseDto();
+    }
+
+    public ProductBriefDTO getBriefProduct(String id) {
+        Product product = productRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Product not found with id " + id));
+
+        String coverImage = (product.getImageUrls() != null && !product.getImageUrls().isEmpty())
+                ? product.getImageUrls().get(0).getImageUrl()
+                : "http://www.sitech.co.id/assets/img/products/default.jpg";
+
+        return new ProductBriefDTO()
+                .setId(product.getId())
+                .setName(product.getName())
+                .setPrice(product.getPrice().doubleValue())
+                .setCoverImage(coverImage);
     }
 
     private Category getProductCategoryByName(String categoryName) {

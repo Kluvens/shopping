@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.DTO.requestDTO.ProductCreationDTO;
 import com.example.DTO.requestDTO.ProductUpdateDTO;
+import com.example.DTO.responseDTO.ProductBriefDTO;
 import com.example.DTO.responseDTO.ProductResponseDTO;
 import com.example.model.Product;
 import com.example.service.ProductService;
@@ -62,6 +63,12 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable String id, @RequestBody ProductUpdateDTO productUpdateDTO) {
         ProductResponseDTO updatedProduct = productService.updateProduct(id, productUpdateDTO);
         return ResponseEntity.ok(updatedProduct);
+    }
+
+    @GetMapping("/{id}/brief")
+    public ResponseEntity<ProductBriefDTO> getBriefProduct(@PathVariable String id) {
+        ProductBriefDTO product = productService.getBriefProduct(id);
+        return ResponseEntity.ok(product);
     }
 
 }

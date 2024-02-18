@@ -4,7 +4,7 @@ import com.example.DTO.requestDTO.CustomerAddressCreationDTO;
 import com.example.DTO.requestDTO.CustomerCreationDTO;
 import com.example.DTO.requestDTO.CustomerUpdateDTO;
 import com.example.DTO.responseDTO.CustomerResponseDTO;
-import com.example.model.Address;
+import com.example.DTO.responseDTO.ProductBriefDTO;
 import com.example.model.Customer;
 import com.example.service.CustomerAddressService;
 import com.example.service.CustomerService;
@@ -79,8 +79,17 @@ public class CustomerController {
         return ResponseEntity.ok(updatedCustomer.toResponseDTO());
     }
 
-//    @PutMapping("/{id}/add/favourite-item/{productId}")
-//    public ResponseEntity<CustomerResponseDTO> addToFavouriteList(@PathVariable String id, @PathVariable String productId) {
-//
-//    }
+    @GetMapping("/{id}/favourite-list")
+    public ResponseEntity<List<ProductBriefDTO>> getFavouriteItems(@PathVariable String id) {
+        List<ProductBriefDTO> favouriteItems = customerService.getFavouriteItems(id);
+
+        return ResponseEntity.ok(favouriteItems);
+    }
+
+    @PutMapping("/{id}/add/favourite-item/{productId}")
+    public ResponseEntity<CustomerResponseDTO> addToFavouriteList(@PathVariable String id, @PathVariable String productId) {
+        CustomerResponseDTO customer = customerService.addToFavouriteList(id, productId);
+
+        return ResponseEntity.ok(customer);
+    }
 }
