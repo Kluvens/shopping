@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.DTO.requestDTO.CustomerAddressCreationDTO;
 import com.example.DTO.requestDTO.CustomerCreationDTO;
+import com.example.DTO.requestDTO.CustomerUpdateDTO;
 import com.example.DTO.responseDTO.CustomerResponseDTO;
 import com.example.exception.NotFoundException;
 import com.example.model.Address;
@@ -28,7 +29,7 @@ public class CustomerService {
 
     public CustomerResponseDTO findById(String id) {
         Customer customer = customerRepository.findById(id).orElseThrow(()
-                -> new NotFoundException("Product not found with id " + id));
+                -> new NotFoundException("Customer not found with id " + id));
 
         return customer.toResponseDTO();
     }
@@ -41,13 +42,43 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    public Customer addAddressToCustomer(String customerId, Address customerAddress) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(()
-                -> new NotFoundException("Product not found with id " + customerId));
+    public Customer updateCustomer(String id, CustomerUpdateDTO customerUpdateDTO) {
+        Customer customer = customerRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Customer not found with id " + id));
 
-        customer.addAddress(customerAddress);
+        customer.setUsername(customerUpdateDTO.getUsername())
+                .setEmail(customerUpdateDTO.getEmail())
+                .setPassword(customerUpdateDTO.getPassword());
 
-        return customerRepository.save(customer);
+        return customer;
+    }
+
+    public Customer addAddressToCustomer(String id, CustomerAddressCreationDTO customerAddressCreationDTO) {
+        Customer customer = customerRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Customer not found with id " + id));
+
+        List<Address> addresses = customer.getAddresses();
+
+        addresses.add(new Address()
+                .setCustomer(customer)
+                .setStreet(customerAddressCreationDTO.getStreet())
+                .setSuburb(customerAddressCreationDTO.getSuburb())
+                .setState(customerAddressCreationDTO.getState()));
+
+        return customer;
+    }
+
+    public Customer removeAddressFromCustomer(String id, String addressId) {
+        Customer customer = customerRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Customer not found with id " + id));
+
+        Address address = customerAddressRepository.findById(addressId).orElseThrow(()
+                -> new NotFoundException("Address not found with id " + id));
+
+        customer.getAddresses().remove(address);
+        customerAddressRepository.deleteById(addressId);
+
+        return customer;
     }
 
 }

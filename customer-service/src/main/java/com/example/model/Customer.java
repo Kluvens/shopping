@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
+@Table(name = "customers")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,21 +33,11 @@ public class Customer {
 
     private String bio = "";
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL})
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL})
     private List<FavouriteItem> favouriteItems = new ArrayList<>();
-
-    public void addAddress(Address address) {
-        addresses.add(address);
-        address.setCustomer(this);
-    }
-
-    public void removeAddress(Address address) {
-        addresses.remove(address);
-        address.setCustomer(null);
-    }
 
     public CustomerResponseDTO toResponseDTO() {
         return new CustomerResponseDTO()

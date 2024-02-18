@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.DTO.requestDTO.CustomerAddressCreationDTO;
 import com.example.DTO.requestDTO.CustomerCreationDTO;
+import com.example.DTO.requestDTO.CustomerUpdateDTO;
 import com.example.DTO.responseDTO.CustomerResponseDTO;
 import com.example.model.Address;
 import com.example.model.Customer;
@@ -57,12 +58,29 @@ public class CustomerController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/add/addresses/{customerId}")
-    public ResponseEntity<CustomerResponseDTO> customerWithNewAddresses(@PathVariable String customerId, @Valid @RequestBody CustomerAddressCreationDTO customerAddressCreationDTO) {
-        Address customerAddress = customerAddressService.createCustomerAddress(customerAddressCreationDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable String id, @Valid @RequestBody CustomerUpdateDTO customerUpdateDTO) {
+        Customer updatedCustomer = customerService.updateCustomer(id, customerUpdateDTO);
 
-        Customer customerWithNewAddresses = customerService.addAddressToCustomer(customerId, customerAddress);
-
-        return ResponseEntity.ok(customerWithNewAddresses.toResponseDTO());
+        return ResponseEntity.ok(updatedCustomer.toResponseDTO());
     }
+
+    @PutMapping("/{id}/add/address")
+    public ResponseEntity<CustomerResponseDTO> addAddressToCustomer(@PathVariable String id, @Valid @RequestBody CustomerAddressCreationDTO customerAddressCreationDTO) {
+        Customer updatedCustomer = customerService.addAddressToCustomer(id, customerAddressCreationDTO);
+
+        return ResponseEntity.ok(updatedCustomer.toResponseDTO());
+    }
+
+    @PutMapping("/{id}/remove/address/{addressId}")
+    public ResponseEntity<CustomerResponseDTO> removeAddressFromCustomer(@PathVariable String id, @PathVariable String addressId) {
+        Customer updatedCustomer = customerService.removeAddressFromCustomer(id, addressId);
+
+        return ResponseEntity.ok(updatedCustomer.toResponseDTO());
+    }
+
+//    @PutMapping("/{id}/add/favourite-item/{productId}")
+//    public ResponseEntity<CustomerResponseDTO> addToFavouriteList(@PathVariable String id, @PathVariable String productId) {
+//
+//    }
 }

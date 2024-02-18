@@ -50,6 +50,9 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow(()
                 -> new NotFoundException("Product not found with id " + id));
 
+        product.getImageUrls().clear();
+        product.getAttributes().clear();
+
         product.setName(updatedProduct.getName())
                 .setDescription(updatedProduct.getDescription())
                 .setPrice(BigDecimal.valueOf(updatedProduct.getPrice()))

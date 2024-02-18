@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-@ToString(callSuper = true)
 @Table(name = "products")
 public class Product {
     @Id
